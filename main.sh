@@ -10,13 +10,15 @@ echo "🚀 從 Step $START_STEP 開始..."
 # step 1: 影片轉音訊
 if [ "$START_STEP" -le 1 ]; then
     echo "▶ Step 1: 影片轉音訊"
-    sh src/s1_convert_audio.sh
+    # sh src/s1_convert_audio.sh
+    sh src/s_pipeline.sh extract
 fi
 
 # step 2: 語音轉文字
 if [ "$START_STEP" -le 2 ]; then
     echo "▶ Step 2: 語音轉文字"
-    sh src/s2_transcribe_audio.sh
+    # sh src/s2_transcribe_audio.sh
+    sh src/s_pipeline.sh transcribe
 fi
 
 # step 3: AI 文字分析（Python）
