@@ -18,7 +18,10 @@ case "$MODE" in
     echo ":: 🙊 語音轉文字 (較久)"
     SRC_DIR="$AUDIO_DIR"
     DST_DIR="$TRANS_DIR"
-    CMD='whisper "$file" --language Chinese --model medium --output_dir "$DST_DIR" --output_format srt'
+    # CMD='whisper "$file" --language Chinese --model medium --output_dir "$DST_DIR" --output_format srt'
+
+    # 沒有 GPU 無法用 FP16:
+    CMD='whisper "$file" --language Chinese --model medium --output_dir "$DST_DIR" --output_format srt --fp16 False'
 
     shopt -s nullglob
     file_list=("$SRC_DIR"/*.[wW][aA][vV])

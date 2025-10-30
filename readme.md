@@ -5,10 +5,10 @@
 
 **流程**
 
-1. 原始影片音訊抽出: 用開源軟體 FFmpeg 在本機執行
-2. 音訊語音轉文字: 載入 whisper 在本機執行轉文字
-3. 分析文字資訊（AI、指定欄位設定）: Google Gemini
-4. 存為 CSV 資料表，方便分享管理: 在本機增修 CSV
+- Step.1 原始影片音訊抽出: 用開源軟體 FFmpeg 在本機執行
+- Step.2 音訊語音轉文字: 載入 whisper 在本機執行轉文字
+- Step.3 分析文字資訊（AI、指定欄位設定）: Google Gemini
+- Step.4 存為 CSV 資料表，方便分享管理: 在本機增修 CSV
 
 **資料夾結構說明**
 
@@ -152,10 +152,11 @@ Whisper 是「語音轉文字的模型」，它靠 PyTorch 做神經網路運算
     ```bash
     python -c "import numpy; print(numpy.__version__)"
     ```
-3. 再次安裝 Whisper
-    ```bash
-    pip install git+https://github.com/openai/whisper.git
-    ```
-
 
 再次執行。
+
+## Note
+
+- 擷取圖片、短片
+- 上傳圖床，建立連結
+- 上架流程：填入檔案、確認資訊、確認圖片、上下架
