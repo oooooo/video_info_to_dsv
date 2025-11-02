@@ -25,10 +25,10 @@ if [ "$START_STEP" -le 3 ]; then
     ./venv/bin/python3 src/s3_prompt.py
 fi
 
-# step 4: 寫入本地 CSV
+# step 4: 寫入本地 DSV
 if [ "$START_STEP" -le 4 ]; then
-    echo "▶ Step 4: 寫入 CSV"
-    ./venv/bin/python3 src/s4_to_csv.py
+    echo "▶ Step 4: 寫入 DSV"
+    ./venv/bin/python3 src/s4_to_dsv.py
 fi
 
 echo "✅ 全部完成！"
