@@ -17,7 +17,7 @@
   - `01_audio/` 放置運行過程影片抽出的音訊 (wav)
   - `02_trans/` 放置運行過程音訊逐字稿 (srt)
   - `03_json/` 放置運行過程結構化文字資料 (json)
-  - `04_dsv/` 存入的 DSV 檔
+  - `04_dsv/` 存入的 DSV 檔 (csv or tsv)
   - `finish/` 運行過程處理後的檔案將移動到此資料夾 (不分類)
 - `src/` 程式資料夾
 - `.env.setting` 設定資料夾變數
@@ -130,6 +130,18 @@ OPENAI_API_KEY=sk-你的金鑰
     # 已有字幕檔，從轉 JSON 開始
     sh main.sh 3
     ```
+#### 設定
+
+開啟檔案： .env.setting
+
+```bash
+DSV_MODE=overwrite
+# overwrite.   直接新增 / 同名一率覆寫
+# log          直接新增 / 同名只印出不覆寫
+# modify_only. 只覆寫同名列表
+DSV_OUTPUT_FORMAT=tsv
+# 設定輸出檔案格式 tsv / csv
+```
 
 #### 運行 Whisper（Step.2）時遇到問題
 

@@ -7,10 +7,6 @@ from utils import list_files, move_file
 
 # ---------- 設定 ----------
 
-MODE = "overwrite"  # overwrite / log / modify_only
-OUTPUT_FORMAT = "csv"   # tsv / csv
-print(f":: 🐵 存入 DSV, MODE: {MODE}, FORMAT: {OUTPUT_FORMAT}")
-
 
 # 載入 .env
 load_dotenv(".env.setting")
@@ -19,6 +15,13 @@ load_dotenv(".env.setting")
 JSON_DIR = os.getenv("JSON_DIR")
 DSV_DIR = os.getenv("DSV_DIR")
 FINISH_DIR = os.getenv("FINISH_DIR")
+MODE = os.getenv("DSV_MODE")
+OUTPUT_FORMAT = os.getenv("DSV_OUTPUT_FORMAT")
+
+# MODE = "overwrite"  # overwrite / log / modify_only
+# OUTPUT_FORMAT = "csv"   # tsv / csv
+print(f":: 🐵 存入 DSV, MODE: {MODE}, FORMAT: {OUTPUT_FORMAT}")
+
 # 根據輸出格式設定副檔名與分隔符
 if OUTPUT_FORMAT == "tsv":
     DELIMITER = "\t"
