@@ -1,35 +1,47 @@
-import sys
 import os
-import json
+import sys
 import csv
+import json
 from dotenv import load_dotenv
 from utils import list_files, move_file
 
 # ---------- 設定 ----------
 
 MODE = "overwrite"  # overwrite / log / modify_only
-print(f':: 🐵 存入 CSV，MODE: {MODE}')
+OUTPUT_FORMAT = "csv"   # tsv / csv
+print(f":: 🐵 存入 DSV, MODE: {MODE}, FORMAT: {OUTPUT_FORMAT}")
+
 
 # 載入 .env
 load_dotenv(".env.setting")
 
 # 目錄
 JSON_DIR = os.getenv("JSON_DIR")
-CSV_DIR = os.getenv("CSV_DIR")
+DSV_DIR = os.getenv("DSV_DIR")
 FINISH_DIR = os.getenv("FINISH_DIR")
-CSV_FILE = CSV_DIR+"/new.csv"
+# 根據輸出格式設定副檔名與分隔符
+if OUTPUT_FORMAT == "tsv":
+    DELIMITER = "\t"
+    EXT = ".tsv"
+else:
+    DELIMITER = ","
+    EXT = ".csv"
+
+DSV_FILE = os.path.join(DSV_DIR, f"new{EXT}")
 
 
-def load_csv(path):
+def load_dsv(path):
     data = {}
     headers = []
     # 檢查檔案是否存在
     if not os.path.exists(path):
         # 檔案不存在，回傳空的資料和標題
         return data, headers
-    # 讀取 CSV 檔
+
+    # 讀取 DSV 檔
     with open(path, "r", newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
+        # reader = csv.DictReader(f) # csv
+        reader = csv.DictReader(f, delimiter=DELIMITER)  # 改成 Tab
         # 讀取標題
         headers = reader.fieldnames or []
         # 讀取資料
@@ -43,8 +55,8 @@ def load_csv(path):
     return data, headers
 
 
-# ---------- 初始化 CSV 資料 ----------
-existing_data, headers = load_csv(CSV_FILE)
+# ---------- 初始化 DSV 資料 ----------
+existing_data, headers = load_dsv(DSV_FILE)
 
 # ---------- 處理來源 ----------
 pending_files = list_files(JSON_DIR, ".json")
@@ -57,7 +69,7 @@ for file_name in pending_files:
     file_path = os.path.join(JSON_DIR, file_name)
 
     # 讀取內容
-    print(f":: ⏳ 處理中：{file_name} ➜ CSV")
+    print(f":: ⏳ 處理中：{file_name} ➜ DSV")
 
     try:
         # load json
@@ -115,12 +127,13 @@ for file_name in pending_files:
     move_file(file_path, FINISH_DIR)
     print(f":: 🚚 處理完畢，移動 {file_name} 到 FINISH_DIR")
 
-# ---------- 寫回 CSV ----------
-os.makedirs(os.path.dirname(CSV_FILE), exist_ok=True)
-with open(CSV_FILE, "w", newline="", encoding="utf-8") as f:
-    writer = csv.DictWriter(f, headers)
+# ---------- 寫回 DSV ----------
+os.makedirs(os.path.dirname(DSV_FILE), exist_ok=True)
+with open(DSV_FILE, "w", newline="", encoding="utf-8") as f:
+    # writer = csv.DictWriter(f, headers)
+    writer = csv.DictWriter(f, headers, delimiter=DELIMITER)
     writer.writeheader()  # 將標題列寫入文件（第一行）
     for row in existing_data.values():
         writer.writerow(row)
 
-print(f":: ✅ CSV 更新完成: {CSV_FILE}")
+print(f":: ✅ DSV 更新完成: {DSV_FILE}")

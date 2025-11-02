@@ -6,7 +6,7 @@ data/00_video/*
 data/01_audio/*
 data/02_trans/*
 data/03_json/*
-data/04_csv/*
+data/04_dsv/*
 data/finish/*
 
 # Byte-compiled / optimized / DLL files
