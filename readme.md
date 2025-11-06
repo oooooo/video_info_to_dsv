@@ -37,54 +37,57 @@
 - google-generativeai（分析文字）`pip install google-generativeai`
 - python-dotenv（讀取 .env）`pip install python-dotenv`
 
-以下說明是以 macOS 為操作環境所寫，Windows 使用者可依概念尋找對應指令，部分開發環境或工具（如 Python, FFmpeg）則是用不同的安裝方式。
+以下說明是以 macOS 為操作環境所寫，Windows 使用者可依概念尋找對應指令，部分開發環境或工具（如 Python, FFmpeg）安裝方式有所差別。
 
 ## 事前準備
 
+1. 自己的 Google Gemini 帳號 (AI 服務)
+2. 安裝轉檔軟體 FFmpeg
+3. 安裝程式執行環境 python
+
 打開終端機：
 
-1. 在本機安裝 FFmpeg 軟體：影片音訊抽出 (.mov ➜ .wav).
+### 本機安裝 FFmpeg 軟體
 
-    FFmpeg 是一個開放原始碼的自由軟體，可以執行音訊和視訊多種格式的錄影、轉檔、串流功能。
+影片音訊抽出 (e.g. .mov ➜ .wav).
 
-    終端機輸入指令：
+FFmpeg 是一個開放原始碼的自由軟體，可以執行音訊和視訊多種格式的錄影、轉檔、串流功能。
 
-    ffmpeg 版本 （確認是否有安裝）
-    ```bash
-    ffmpeg -version
-    ```
-    有安裝會顯示版本號。
+終端機輸入指令：
 
-    (mac) 沒有安裝可用 Homebrew 下載安裝軟體 （需有 Homebrew）
-    ```bash
-    brew install ffmpeg
-    ```
+```bash
+ffmpeg -version
+```
 
-1. 主要使用 python 開發。 請確認有安裝 python (version >= 3.11)。
+查看 ffmpeg 版本（確認是否有安裝），有安裝會顯示版本號。
 
-    終端機輸入指令：
+(mac) 沒有安裝可用 Homebrew 下載安裝軟體 （需有 Homebrew）
 
-    查看電腦上 Python 版本 （確認是否有安裝）
-    ```bash
-    python3 --version
-    ```
-    查看 pip（Python 套件管理工具）的版本
-    ```bash
-    pip3 --version
-    ```
-    以上有安裝會顯示版本號。
+```bash
+brew install ffmpeg
+```
 
-    > Windows 前往 Python 官方網站下載最新版。 安裝過程中請**務必勾選：「Add Python 3.x to PATH」**。
+### 請確認有安裝 python (version >= 3.11)
 
-1. 自己的 Google Gemini 帳號 (AI 服務設定)
+終端機輸入指令：
+
+查看電腦上 Python 版本（確認是否有安裝），有安裝會顯示版本號。
+```bash
+python3 --version
+```
+
+> 前往 Python 官方網站下載最新版。 Windows 安裝過程中請**務必勾選：「Add Python 3.x to PATH」**。
+
 
 ## 安裝專案
 
 
 ### 1. 建立虛擬環境
 
-終端機進入專案，建立 Python 虛擬環境（venv）。
+下載後，終端機進入專案，建立 Python 虛擬環境（venv 資料夾），之後只「啟動」虛擬環境。
+
 建立 Python 虛擬環境（venv），指令：
+
 ```shell
 python3 -m venv venv
 ```
@@ -98,12 +101,12 @@ source venv/bin/activate
 > 虛擬環境是一個獨立的 Python 執行空間，專案需要用到的套件與工具都安裝在這個環境裡。
 > Python 本身會在這個虛擬環境中執行，以確保程式在穩定、乾淨的環境下運作。
 
-安裝 Python 套件（到虛擬環境）：
+安裝 Python 套件到虛擬環境（安裝也只需一次）：
 ```bash
 pip install -r requirements.txt
 ```
 
-若要關閉虛擬環境：
+若要關閉虛擬環境，輸入指令：
 ```bash
 deactivate
 ```
@@ -113,7 +116,7 @@ deactivate
 使用 AI 雲端服務，要申請 AI 的 API KEY (可能付費) 請至官網。
 API KEY 是一組帳號識別碼，為敏感資料，務必安全保管。
 
-這裡使用 Google 的 Gemini （目前不須信用卡）。
+這裡使用 Google 的 Gemini （目前不須綁信用卡）。
 > 到 https://aistudio.google.com/app/apikey
 > 登入 Google 帳號並產生 API 金鑰
 > 會得到一組 API key
@@ -133,7 +136,7 @@ OPENAI_API_KEY=你的金鑰
     ```bash
     source venv/bin/activate
     ```
-1. 將影片放入 `data/00_video/` 資料夾
+1. 將影片放入 `data/01_video/` 資料夾
 1. 執行主檔案，在命令列輸入指令：
     ```bash
     sh main.sh
@@ -141,18 +144,19 @@ OPENAI_API_KEY=你的金鑰
 
     若要指定從哪個流程開始：
 
-    - `1` 轉音訊開始（預設）
-    - `2` 轉字幕開始
-    - `3` 轉 JSON 開始
-    - `4` 存入 DSV.
+    - `1` 從 影片 開始處理（預設）
+    - `2` 從 音訊 開始處理
+    - `3` 從 字幕 開始處理
+    - `4` 從 JSON 開始處理
 
     ```bash
-    # 已有字幕檔，從轉 JSON 開始
+    # 已有字幕檔，開始處理字幕檔：
     sh main.sh 3
     ```
+
 #### 設定
 
-開啟檔案： .env.setting
+開啟檔案 `.env.setting`
 
 ```bash
 # 表格資料更新模式：
@@ -174,6 +178,7 @@ RuntimeError: Numpy is not available
 ```
 你的 NumPy 版本不合，導致 PyTorch（還有 Whisper）無法正常運作。
 Whisper 是「語音轉文字的模型」，它靠 PyTorch 做神經網路運算，PyTorch 又用 NumPy 做矩陣/數字運算。
+重安裝正確版本：
 
 安裝前確認虛擬環境 (venv) 已啟動 `source venv/bin/activate`。
 
