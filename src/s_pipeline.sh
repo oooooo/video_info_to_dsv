@@ -3,6 +3,13 @@
 MODE=$1
 source .env.setting
 
+# 影片副檔名
+VIDEO_EXTS=(mp4 MOV mov avi mkv flv wmv)
+# 音訊副檔名
+AUDIO_EXTS=(wav m4a mp3 flac)
+
+mkdir -p "$VIDEO_DIR" "$AUDIO_DIR" "$TRANS_DIR" "$FINISH_DIR" "$JSON_DIR" "$DSV_DIR" # 確保資料夾存在
+
 case "$MODE" in
   extract)
     echo ":: 🙉 影片音訊抽出"
@@ -10,9 +17,13 @@ case "$MODE" in
     DST_DIR="$AUDIO_DIR"
     CMD='ffmpeg -hide_banner -v warning -i "$file" -ar 16000 -ac 1 "$DST_DIR/${name}.wav"'
 
+    # # ===== 抓影片檔抽音訊 =====
     shopt -s nullglob
-    file_list=("$SRC_DIR"/*.[mM][oO][vV])
-    shopt -u nullglob  # 用完就關掉
+    file_list=()
+    for ext in "${VIDEO_EXTS[@]}"; do
+        file_list+=("$VIDEO_DIR"/*."$ext")
+    done
+    shopt -u nullglob
     ;;
   transcribe)
     echo ":: 🙊 語音轉文字 (較久)"
@@ -24,7 +35,10 @@ case "$MODE" in
     CMD='whisper "$file" --language Chinese --model medium --output_dir "$DST_DIR" --output_format srt --fp16 False'
 
     shopt -s nullglob
-    file_list=("$SRC_DIR"/*.[wW][aA][vV])
+    file_list=()
+    for ext in "${AUDIO_EXTS[@]}"; do
+        file_list+=("$AUDIO_DIR"/*."$ext")
+    done
     shopt -u nullglob
     ;;
   *)
@@ -33,10 +47,10 @@ case "$MODE" in
     ;;
 esac
 
-mkdir -p "$DST_DIR" "$FINISH_DIR"
+# mkdir -p "$DST_DIR" "$FINISH_DIR"
 
 if [ ${#file_list[@]} -eq 0 ]; then
-  echo ":: ❌ 找不到 .\"$EXT\" 檔案！"
+  echo ":: ❌ 找不到可處理的檔案！"
   exit 1
 fi
 
@@ -51,7 +65,7 @@ for file in "${file_list[@]}"; do
       mv "$file" "$FINISH_DIR"
       echo ":: 🚚 處理完成。移動 \"$filename\" 到 \"$FINISH_DIR\""
   else
-      echo ":: ❌ 轉檔未成功"
+      echo ":: ❌ 轉檔失敗"
   fi
 done
 
