@@ -1,14 +1,11 @@
 # Speak Sheet
 
-將「口述影片語音/文字內容」分析並轉為「表格化資料」檔案保存，表格的欄位可自定義。
+協助觀察者把影片、口述音訊、文字紀錄等內容，依照事先定義好的欄位資料，抓取資訊，以資料表格式儲存，方便後續統整或分析。
 
 情境舉例：
 
 收容所動物很多，每隻動物的資料需一筆筆比對、手動建檔。
 現在可以用手邊工具錄音錄影等方式，快速搜集資料，再將資料素材放入程式的指定資料夾 → 執行程式 → 產生整理好的表格資料，自動化一次產生多個動物檔案。
-
-
-
 
 
 **流程**
@@ -35,12 +32,6 @@
 - `readme.md` 說明檔/本檔案
 - `requirements.txt` 專案需求套件表
 
-**主要使用套件**
-
-- Whisper（語音轉文字）`pip install git+https://github.com/openai/whisper.git`
-- google-generativeai（分析文字）`pip install google-generativeai`
-- python-dotenv（讀取 .env）`pip install python-dotenv`
-
 以下說明是以 macOS 為操作環境所寫，Windows 使用者可依概念尋找對應指令，部分開發環境或工具（如 Python, FFmpeg）安裝方式有所差別。
 
 ## 事前準備
@@ -51,9 +42,7 @@
 
 打開終端機：
 
-### 本機安裝 FFmpeg 軟體
-
-影片音訊抽出 (e.g. .mov ➜ .wav).
+### 在本機安裝 FFmpeg 軟體
 
 FFmpeg 是一個開放原始碼的自由軟體，可以執行音訊和視訊多種格式的錄影、轉檔、串流功能。
 
@@ -71,7 +60,7 @@ ffmpeg -version
 brew install ffmpeg
 ```
 
-### 請確認有安裝 python (version >= 3.11)
+### 確認有安裝 python (version >= 3.11)
 
 終端機輸入指令：
 
@@ -85,18 +74,21 @@ python3 --version
 
 ## 安裝專案
 
+下載到電腦後
 
 ### 1. 建立虛擬環境
 
-下載後，終端機進入專案，建立 Python 虛擬環境（venv 資料夾），之後只「啟動」虛擬環境。
+以終端機進入專案，建立 Python 虛擬環境（venv 資料夾）。
+虛擬環境只需建立一次，之後僅「啟動」。
 
-用系統的 python3 在專案建立虛擬環境（venv），指令：
+用系統的 python 在專案建立虛擬環境（venv）指令：
 
 ```shell
 python3 -m venv venv
 ```
 
-啟動專案的虛擬環境：
+啟動專案的虛擬環境指令：
+
 ```bash
 source venv/bin/activate
 ```
@@ -106,17 +98,20 @@ source venv/bin/activate
 > 虛擬環境是一個獨立的 Python 執行空間，專案需要用到的套件與工具都安裝在這個環境裡。
 > Python 本身會在這個虛擬環境中執行，以確保程式在穩定、乾淨的環境下運作。
 
-升級虛擬環境中的 Python 輔助工具套件
+升級虛擬環境中的 Python 輔助工具套件指令：
+
 ```bash
 python -m pip install --upgrade pip setuptools wheel
 ```
 
-安裝 Python 套件到虛擬環境（安裝也只需一次）：
+安裝專案指定套件到虛擬環境指令：
+
 ```bash
 pip install -r requirements.txt
 ```
 
 若要關閉虛擬環境，輸入指令：
+
 ```bash
 deactivate
 ```
@@ -164,51 +159,30 @@ OPENAI_API_KEY=你的金鑰
     sh main.sh 3
     ```
 
-#### 設定
+#### 更多設定
 
 開啟檔案 `.env.setting`
 
+表格 資料更新模式：
 ```bash
-# 表格資料更新模式：
 DSV_MODE=overwrite
 # overwrite   新資料直接新增 / 同名新資料取代表格中的舊資料。
 # log         新資料直接新增 / 同名僅通知有同名資料。
 # modify_only 只取代同名資料
-
-# 表格檔案格式：
+```
+表格 檔案格式：
+```bash
 DSV_OUTPUT_FORMAT=tsv
 # 設定輸出格式 tsv / csv
 ```
 
-#### 運行 Whisper（Step.2）時遇到問題
-
-```bash
-.....
-RuntimeError: Numpy is not available
-```
-你的 NumPy 版本不合，導致 PyTorch（還有 Whisper）無法正常運作。
-Whisper 是「語音轉文字的模型」，它靠 PyTorch 做神經網路運算，PyTorch 又用 NumPy 做矩陣/數字運算。
-重安裝正確版本：
-
-安裝前確認虛擬環境 (venv) 已啟動 `source venv/bin/activate`。
-
-1. 安裝套件（到虛擬環境）：指定的 numpy 版本,
-    ```bash
-    pip install "numpy<2"
-    ```
-
-2. 確認版本正確安裝，會回傳版本號
-
-    ```bash
-    python -c "import numpy; print(numpy.__version__)"
-    ```
-
-再次執行。
-
 ## Note
 
-待新增功能：
+未來功能：
 
+- 分段轉錄
+- 多線程
 - 擷取圖片、短片
 - 上傳圖床，建立連結
 - 外部上架流程：填入檔案、確認資訊、確認圖片、上下架
+

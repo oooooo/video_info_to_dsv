@@ -3,7 +3,7 @@ import os
 import json
 import google.generativeai as genai
 from dotenv import load_dotenv
-from utils import list_files, move_file
+from _utils import list_files, move_file
 
 # ---------- 設定 ----------
 # 載入 .env
