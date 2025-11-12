@@ -52,7 +52,7 @@ def segments_to_srt(segments, srt_path):
 
 
 def transcribe_audio(add_txt=False):
-    print(":: 🙉 音訊轉字幕")
+    print(":: 🙉 音訊轉字幕：")
     """音檔分段 + Whisper 轉錄 + 生成 SRT"""
 
     model, use_fp16 = load_whisper_model()

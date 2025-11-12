@@ -11,7 +11,7 @@ VIDEO_EXTS = (".mp4", ".MOV", ".mov", ".avi", ".mkv", ".flv", ".wmv")
 
 
 def extract_audio():
-    print(":: 🙉 影片音訊抽出")
+    print(":: 🙉 影片音訊抽出：")
     """影片抽音訊"""
     pending = _utils.list_files(_dir.VIDEO_DIR, VIDEO_EXTS)
     if not pending:
