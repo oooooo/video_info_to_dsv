@@ -144,7 +144,7 @@ OPENAI_API_KEY=你的金鑰
 1. 將影片放入 `data/01_video/` 資料夾
 1. 執行主檔案，在命令列輸入指令：
     ```bash
-    sh main.sh
+    python main.py
     ```
 
     若要指定從哪個流程開始：
@@ -156,12 +156,10 @@ OPENAI_API_KEY=你的金鑰
 
     ```bash
     # 已有字幕檔，開始處理字幕檔：
-    sh main.sh 3
+    python main.py --s 3
     ```
 
-#### 更多設定
-
-開啟檔案 `.env.setting`
+#### 更多設定 `.env.setting`
 
 表格 資料更新模式：
 ```bash
@@ -170,17 +168,22 @@ DSV_MODE=overwrite
 # log         新資料直接新增 / 同名僅通知有同名資料。
 # modify_only 只取代同名資料
 ```
+
 表格 檔案格式：
 ```bash
 DSV_OUTPUT_FORMAT=tsv
 # 設定輸出格式 tsv / csv
 ```
 
+表格 檔案名稱：
+```bash
+DSV_FILENAME=table
+```
+
 ## Note
 
 未來功能：
 
-- 分段轉錄
 - 多線程
 - 擷取圖片、短片
 - 上傳圖床，建立連結

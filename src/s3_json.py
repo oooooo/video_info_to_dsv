@@ -68,7 +68,7 @@ josn_prompt = """
 
 
 def srt_to_json():
-    print(":: 🙉 字幕換 JSON")
+    print(":: 🙉 字幕換 JSON：")
     """處理 SRT to JSON (AI)"""
     pending = _utils.list_files(_dir.TRANS_DIR, ".srt")
     if not pending:

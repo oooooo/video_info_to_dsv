@@ -55,7 +55,7 @@ def load_dsv(path):
 def export_dsv():
     """將 JSON 轉成 DSV 檔案"""
     DSV_FILE = os.path.join(_dir.DSV_DIR, f"{DSV_FILENAME}{EXT}")
-    print(f":: 🐵 存入 DSV:  {DSV_FILENAME}.{OUTPUT_FORMAT}, MODE: {MODE}")
+    print(f":: 🐵 DSV:  {DSV_FILENAME}.{OUTPUT_FORMAT}, MODE: {MODE}")
 
     # 初始化 DSV 資料 ----------
     existing_data, headers = load_dsv(DSV_FILE)
