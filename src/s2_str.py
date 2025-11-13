@@ -77,11 +77,13 @@ def transcribe_audio(add_txt=False):
             # 從 i 取到 i+SEGMENT_MS 毫秒。
             seg = audio[i:i+SEGMENT_MS]
             seg_file = "temp_seg.wav"
-            seg.export(seg_file, format="wav")
+            seg_path = os.path.join(_dir.AUDIO_DIR, seg_file)
+            seg.export(seg_path, format="wav")
+
             # 給 Whisper 轉錄
             # result = model.transcribe(seg_file, language="Chinese")
             result = model.transcribe(
-                seg_file, language="Chinese", fp16=use_fp16)
+                seg_path, language="Chinese", fp16=use_fp16)
 
             """ result = {
                 "text": "你好 我是測試",
@@ -94,6 +96,7 @@ def transcribe_audio(add_txt=False):
             """
             segments_all.extend(result["segments"])
             # extend() 把可迭代物件的每個元素「拆開」、「逐個加入」 list
+            os.remove(seg_path)
 
         # 生成 SRT 字幕
         srt_path = os.path.join(_dir.TRANS_DIR, f"{filename}.srt")
